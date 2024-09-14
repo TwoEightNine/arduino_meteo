@@ -106,68 +106,68 @@ void drawDigit(LiquidCrystal_I2C lcd, uint8_t digit, uint8_t offset) {
     bool draw;
     lcd.setCursor(offset, 0);
     if ((digit % 2 == 0 || digit % 3 == 0) && digit != 4) {
-        drawOrClean(true, TOP_LEFT_SMOOTH);
+        drawOrClean(lcd, true, TOP_LEFT_SMOOTH);
     } else {
-        drawOrClean(digit != 1, TOP_CORNER_SHARP);
+        drawOrClean(lcd, digit != 1, TOP_CORNER_SHARP);
     }
 
     lcd.setCursor(offset + 1, 0);
     draw = digit != 1 && digit != 4;
-    drawOrClean(draw, MID_BLOCK);
+    drawOrClean(lcd, draw, MID_BLOCK);
 
     lcd.setCursor(offset + 2, 0);
     if (digit % 3 == 1) {
-        drawOrClean(true, TOP_CORNER_SHARP);
+        drawOrClean(lcd, true, TOP_CORNER_SHARP);
     } else if (digit == 5) {
-        drawOrClean(true, MID_BLOCK);
+        drawOrClean(lcd, true, MID_BLOCK);
     } else {
-        drawOrClean(true, TOP_RIGHT_SMOOTH);
+        drawOrClean(lcd, true, TOP_RIGHT_SMOOTH);
     }
 
     lcd.setCursor(offset, 1);
     if (digit == 2) {
-        drawOrClean(true, TOP_LEFT_SMOOTH);
+        drawOrClean(lcd, true, TOP_LEFT_SMOOTH);
     } else if (digit == 5) {
-        drawOrClean(true, BOTTOM_CORNER_SHARP);
+        drawOrClean(lcd, true, BOTTOM_CORNER_SHARP);
     } else if (digit % 2 == 0 && digit != 4) {
-        drawOrClean(true, FULL_BLOCK);
+        drawOrClean(lcd, true, FULL_BLOCK);
     } else {
-        drawOrClean(digit > 3 && digit != 7, BOTTOM_LEFT_SMOOTH);
+        drawOrClean(lcd, digit > 3 && digit != 7, BOTTOM_LEFT_SMOOTH);
     }
     
     lcd.setCursor(offset + 1, 1);
-    drawOrClean(digit > 1 && digit != 7, MID_BLOCK);
+    drawOrClean(lcd, digit > 1 && digit != 7, MID_BLOCK);
 
     lcd.setCursor(offset + 2, 1);
     if (digit == 2) {
-        drawOrClean(true, BOTTOM_RIGHT_SMOOTH);
+        drawOrClean(lcd, true, BOTTOM_RIGHT_SMOOTH);
     } else if (digit == 5 || digit == 6) {
-        drawOrClean(true, TOP_RIGHT_SMOOTH);
+        drawOrClean(lcd, true, TOP_RIGHT_SMOOTH);
     } else {
-        drawOrClean(true, FULL_BLOCK);
+        drawOrClean(lcd, true, FULL_BLOCK);
     }
 
     lcd.setCursor(offset, 2);
     if (digit == 2) {
-        drawOrClean(true, BOTTOM_CORNER_SHARP);
+        drawOrClean(lcd, true, BOTTOM_CORNER_SHARP);
     } else {
-        drawOrClean(digit % 3 != 1, BOTTOM_LEFT_SMOOTH);
+        drawOrClean(lcd, digit % 3 != 1, BOTTOM_LEFT_SMOOTH);
     }
 
     lcd.setCursor(offset + 1, 2);
-    drawOrClean(digit % 3 != 1, MID_BLOCK);
+    drawOrClean(lcd, digit % 3 != 1, MID_BLOCK);
 
     lcd.setCursor(offset + 2, 2);
     if (digit == 2) {
-        drawOrClean(true, MID_BLOCK);
+        drawOrClean(lcd, true, MID_BLOCK);
     } else if (digit % 3 == 1) {
-        drawOrClean(true, BOTTOM_CORNER_SHARP);
+        drawOrClean(lcd, true, BOTTOM_CORNER_SHARP);
     } else {
-        drawOrClean(true, BOTTOM_RIGHT_SMOOTH);
+        drawOrClean(lcd, true, BOTTOM_RIGHT_SMOOTH);
     }
 }
 
-void drawOrClean(bool draw, uint8_t c) {
+void drawOrClean(LiquidCrystal_I2C lcd, bool draw, uint8_t c) {
     if (draw) {
         lcd.write(c);
     } else {
