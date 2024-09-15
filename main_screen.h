@@ -1,9 +1,6 @@
 #include "screen.h"
 #include "sensors.h"
-
-// ds1302
-#include <ThreeWire.h>  
-#include <RtcDS1302.h>
+#include "clock.h"
 
 // lcd 2004
 #include <LiquidCrystal_I2C.h>
@@ -46,7 +43,7 @@ struct Sensors {
 class MainScreen : public Screen {
 private:
     SensorsProvider *sensorsProvider;
-    RtcDS1302<ThreeWire> *rtc;
+    Clock *clock;
     LiquidCrystal_I2C *lcd;
 
     uint8_t mode = MODE_TIME;
@@ -76,7 +73,7 @@ private:
     uint8_t readBrightness();
 
 public:
-    MainScreen(SensorsProvider *sensorsProvider, RtcDS1302<ThreeWire> *rtc, LiquidCrystal_I2C *lcd);
+    MainScreen(SensorsProvider *sensorsProvider, Clock *clock, LiquidCrystal_I2C *lcd);
     void loop(); 
     void onButtonClicked(uint8_t btn);
 };

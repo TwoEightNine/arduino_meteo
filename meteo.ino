@@ -25,8 +25,7 @@
 #define CHAR_DEGREE 10
 
 LiquidCrystal_I2C *lcd;
-
-RtcDS1302<ThreeWire> *rtc;
+Clock *clock;
 
 SensorsProvider *sensorsProvider;
 MainScreen *mainScreen;
@@ -53,30 +52,8 @@ void setup() {
     DEBUG_SERIAL.print(__DATE__);
     DEBUG_SERIAL.println(__TIME__);
 
-    ThreeWire myWire(PIN_RTC_DAT, PIN_RTC_CLK, PIN_RTC_RST);
-    rtc = new RtcDS1302<ThreeWire>(myWire);
-    rtc->Begin();
-
-    RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-
-    if (!rtc->IsDateTimeValid()) {
-        rtc->SetDateTime(compiled);
-    }
-
-    if (rtc->GetIsWriteProtected()) {
-        rtc->SetIsWriteProtected(false);
-    }
-
-    if (!rtc->GetIsRunning()) {
-        rtc->SetIsRunning(true);
-    }
-
-    RtcDateTime now = rtc->GetDateTime();
-    if (now < compiled) {
-        rtc->SetDateTime(compiled);
-    }
-
-    mainScreen = new MainScreen(sensorsProvider, rtc, lcd);
+    clock = new Clock();
+    mainScreen = new MainScreen(sensorsProvider, clock, lcd);
 }
 
 void loop() {
@@ -85,5 +62,9 @@ void loop() {
     if (digitalRead(PIN_BTN_1)) {
         while (digitalRead(PIN_BTN_1)) ;
         mainScreen->onButtonClicked(1);
+    }
+    if (digitalRead(PIN_BTN_2)) {
+        while (digitalRead(PIN_BTN_2)) ;
+        mainScreen->onButtonClicked(2);
     }
 }

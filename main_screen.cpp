@@ -1,9 +1,9 @@
 #include "main_screen.h"
 
 
-MainScreen::MainScreen(SensorsProvider *sensorsProvider, RtcDS1302<ThreeWire> *rtc, LiquidCrystal_I2C *lcd) {
+MainScreen::MainScreen(SensorsProvider *sensorsProvider, Clock *clock, LiquidCrystal_I2C *lcd) {
     this->sensorsProvider = sensorsProvider;
-    this->rtc = rtc;
+    this->clock = clock;
     this->lcd = lcd;
 }
 
@@ -59,17 +59,17 @@ void MainScreen::onButtonClicked(uint8_t btn) {
 
 void MainScreen::updateTime(uint8_t tickTime) {
     if (mode == MODE_TIME) {
-        RtcDateTime now = rtc->GetDateTime();
+        uint32_t now = clock->getDateTime();
         
-        uint8_t hours = now.Hour();
-        uint8_t minutes = now.Minute();
+        uint8_t hours = (now >> 8) & 0xff;
+        uint8_t minutes = now & 0xff;
         
         printLargeTime(*lcd, hours, minutes, tickTime);
         lcd->setCursor(0, 3);
 
-        uint8_t day = now.Day();
-        uint8_t month = now.Month();
-        uint8_t dayOfWeek = now.DayOfWeek();
+        uint8_t day = (now >> 23) & 0x20;
+        uint8_t month = (now >> 19) & 0x10;
+        uint8_t dayOfWeek = (now >> 16) & 0x07;
 
         __FlashStringHelper* dayOfWeekName;
         if (dayOfWeek == 0) {
